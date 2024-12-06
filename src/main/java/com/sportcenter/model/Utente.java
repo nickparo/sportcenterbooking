@@ -1,6 +1,7 @@
 
 package com.sportcenter.model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,13 +27,15 @@ public class Utente {
 
     private String password;
 
+    
+
     @ManyToMany
     @JoinTable(
         name = "user_roles", // Nome della tabella di join
         joinColumns = @JoinColumn(name = "user_id"), // Colonna di join per User
         inverseJoinColumns = @JoinColumn(name = "role_id") // Colonna di join per Role
     )
-    private Set<Ruolo> ruoli;
+    private Set<Ruolo> ruoli= new HashSet<>();
 
     @OneToMany
     (mappedBy = "utente")
@@ -41,6 +44,7 @@ public class Utente {
 
 
     // Getter e Setter
+  
     public Long getId() {
         return id;
     }
