@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sportcenter.dto.AuthRequest;
-import com.sportcenter.model.Utente;
+import com.sportcenter.dto.RegisterUserRequest;
 import com.sportcenter.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -21,8 +21,8 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid Utente utente) {
-        authService.register(utente);
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterUserRequest registerUserRequest) {
+        authService.register(registerUserRequest);
         return ResponseEntity.ok("Utente registrato con successo!");
     }
 
@@ -31,4 +31,6 @@ public class AuthController {
         String token = authService.login(authRequest);
         return ResponseEntity.ok(token);
     }
+
+
 }
