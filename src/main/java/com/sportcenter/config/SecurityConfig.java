@@ -28,7 +28,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/pagamentos/**").permitAll()
                         .requestMatchers("/api/camposportivos/**").permitAll()
                         
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .httpBasic(withDefaults());
         return http.build();
     }

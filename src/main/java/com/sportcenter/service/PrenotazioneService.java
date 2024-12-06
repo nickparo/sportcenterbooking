@@ -3,6 +3,7 @@ package com.sportcenter.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sportcenter.dto.PrenotazioneRequest;
 import com.sportcenter.model.CampoSportivo;
 import com.sportcenter.model.Prenotazione;
 import com.sportcenter.model.Utente;
@@ -15,32 +16,30 @@ public class PrenotazioneService {
 
     @Autowired
     private CampoSportivoRepository campoSportivoRepository;
-
     @Autowired
     private UtenteRepository utenteRepository;
-
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
 
-    
-    public Prenotazione prenotazioneRequest(Long prenotazioneId, Long utenteId, Long campoSportivoId) {
-        Prenotazione prenotazione = prenotazioneRepository.findById(prenotazioneId).orElseThrow(() -> new RuntimeException("prenotazione not found"));
+    public Prenotazione create( PrenotazioneRequest request) {
+        //recuperare l'utente dal repository UtenteRepository
+        Utente utente = utenteRepository.findById(request.getUtenteId()).get();
+        //recuperare l'utente dal repository CampoSportivoRepository
+        CampoSportivo campoSportivo = campoSportivoRepository.findById(request.getCamposportivoId()).get();
+        //settare i valori in oggetto Prenotazione
+        Prenotazione prenotazioneToSave = new Prenotazione();
+
+        prenotazioneToSave.setDataOra(request.getDataOra());
+        prenotazioneToSave.setStato(request.getStato());
+        prenotazioneToSave.setCampoSportivo(campoSportivo);
+        prenotazioneToSave.setUtente(utente);
+        
+        //salvare
+        prenotazioneToSave = prenotazioneRepository.save(prenotazioneToSave);
+       
 
 
-        Utente utente = utenteRepository.findById(utenteId).orElseThrow(() -> new RuntimeException("Utente not found"));
-        if (prenotazione.getUtente().add(utente)) {
-            UtenteRepository.save(prenotazione);
-        }
-        return prenotazione;
-
-    
-
-    CampoSportivo campoSportivo =  campoSportivoRepository.findById(campoSportivoId).orElseThrow(() -> new RuntimeException("Campo sportivo not found"));
-    if (prenotazione.getCampoSportivo().add(campoSportivo)) {
-        CampoSportivoRepository.save(prenotazione);
-    }
-
-    return prenotazione;
+    return prenotazioneToSave;
     
 }
 }
